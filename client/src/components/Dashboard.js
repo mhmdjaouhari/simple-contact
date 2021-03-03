@@ -31,10 +31,10 @@ const Dashboard = ({ user, authenticate }) => {
               <p className="card-text" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>
                 {question.body}
               </p>
-              <a href={`mailto:${question.email}`} class="btn btn-small btn-primary mr-2">
+              <a href={`mailto:${question.email}`} className="btn btn-small btn-primary mr-2">
                 Reply
               </a>
-              <Link to={`/questions/${question._id}`} class="btn btn-small btn-secondary">
+              <Link to={`/questions/${question._id}`} className="btn btn-small btn-secondary">
                 Read more
               </Link>
             </div>

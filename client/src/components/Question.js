@@ -34,7 +34,7 @@ const Question = ({
           <h6 className="mb-2 text-muted">{question.email}</h6>
           <b>Question</b>
           <p>{question.body}</p>
-          <a href={`mailto:${question.email}`} class="btn btn-small btn-primary mr-2">
+          <a href={`mailto:${question.email}`} className="btn btn-small btn-primary mr-2">
             Reply
           </a>
         </>

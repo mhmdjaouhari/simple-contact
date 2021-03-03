@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const mongoose = require("mongoose");
+const { check, validationResult } = require("express-validator");
 const Question = require("../../models/Question");
 
 // @route   GET api/questions
@@ -35,8 +36,10 @@ router.get("/:id", auth, async (req, res) => {
 // @route   POST api/lists
 // @desc    Create a question
 // @access  Public
-router.post("/", async (req, res) => {
+router.post("/", [check("email", "Please enter a valid email").isEmail()], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     const newQuestion = new Question({ ...req.body });
     const question = await newQuestion.save();
     res.json(question);

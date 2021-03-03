@@ -81,18 +81,8 @@ const App = () => {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">
-                    Questions
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/users">
-                    Users
-                  </Link>
-                </li>
-                <li className="nav-item">
                   <Link className="btn btn-outline-primary ml-2" onClick={() => authenticate()}>
-                    Logout (<b>{user.username}</b>)
+                    Logout (<b>{user && user.username}</b>)
                   </Link>
                 </li>
               </>

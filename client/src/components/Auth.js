@@ -11,21 +11,8 @@ const Auth = ({ authenticate, isLogin }) => {
     password: "",
     password2: "",
   });
-  const initialAuthValidation = {
-    username: {
-      valid: null,
-      msg: "",
-    },
-    password: {
-      valid: null,
-      msg: "",
-    },
-    password2: {
-      valid: null,
-      msg: "",
-    },
-  };
-  const [authValidation, setAuthValidation] = useState(initialAuthValidation);
+
+  const [errors, setErrors] = useState([]);
 
   const handleLoginChange = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
@@ -35,42 +22,46 @@ const Auth = ({ authenticate, isLogin }) => {
   };
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
     try {
       const res = await Axios.post(`/api/auth/`, { ...login });
       authenticate(res.data.token);
     } catch (error) {
       authenticate();
-      // update validation messages
-      let validation = initialAuthValidation;
-      const errors = error.response.data.errors;
-      if (errors)
-        errors.map((error) => {
-          validation[error.param] = { valid: false, msg: error.msg };
+      const resErrors = error.response.data.errors;
+      if (resErrors)
+        resErrors.map((resError) => {
+          setErrors([...errors, resError.msg]);
         });
-      setAuthValidation(validation);
     }
   };
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
     try {
       const res = await Axios.post(`/api/users/`, { ...signup });
       authenticate(res.data.token);
     } catch (error) {
+      console.log(error);
       authenticate();
-      // update validation messages
-      let validation = initialAuthValidation;
-      const errors = error.response.data.errors;
-      if (errors)
-        errors.map((error) => {
-          validation[error.param] = { valid: false, msg: error.msg };
+      const resErrors = error.response.data.errors;
+      if (resErrors)
+        resErrors.map((resError) => {
+          setErrors([...errors, resError.msg]);
         });
-      setAuthValidation(validation);
     }
   };
 
   return (
     <div className="m-2">
       <h1>{isLogin ? "Login" : "Sign up"}</h1>
+      {errors.length > 0 && (
+        <div className="alert alert-danger" role="alert">
+          {errors.map((error, i) => (
+            <div key={i}>{error}</div>
+          ))}
+        </div>
+      )}
       {isLogin ? (
         <form onSubmit={(e) => handleLoginSubmit(e)}>
           <div className="form-group">
