@@ -41,6 +41,9 @@ router.post(
       const isMatched = await bcrypt.compare(password, user.password);
       if (!isMatched) return res.status(400).json({ errors: [{ msg: "Invalid credentials", param: "password" }] });
 
+      // verify authorization 
+      if(!user.authorized) return res.status(400).json({ errors: [{ msg: "User not authorized", param: "username" }] });
+
       // return jsonwebtoken
       const payload = {
         user: {

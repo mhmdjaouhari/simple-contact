@@ -83,6 +83,9 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
       await user.save();
 
+      // verify authorization 
+      if(!user.authorized) return res.status(400).json({ errors: [{ msg: "User not authorized", param: "username" }] });
+
       // return jsonwebtoken
       const payload = {
         user: {
